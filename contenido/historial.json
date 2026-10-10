@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "fecha": "2026-10-10T05:41:32.223Z",
+    "urn": "urn:li:share:7514560729543417856",
+    "gancho": "detrás de cámaras",
+    "estructura": "historia (problema → intento → giro → aprendizaje)",
+    "texto": "Este post no lo escribí yo.\nLo escribió y lo publicó un agente que armé para que haga esto solo, todos los días.\n\nEl plan original en papel se veía bien:\nCloudflare Workers + un MCP de terceros para conectarme a LinkedIn.\n\nNo sirvió.\n\nEl agente está hecho con el Claude Agent SDK, y el SDK necesita lanzar un proceso para funcionar.\nLos Workers no pueden lanzar procesos.\nAsí de simple. Así de frustrante.\n\nAsí que cambié el lugar, no la idea.\nAhora corre en GitHub Actions, que sí te da una máquina donde el SDK puede hacer lo suyo.\nY en vez del MCP de terceros, publica con la API oficial de LinkedIn. Una pieza menos de otra persona en el medio.\n\nLo que me llevo de esto:\nAntes de decidir dónde va a correr un agente, entiende qué necesita para correr.\n\"Serverless\" suena bonito hasta que tu herramienta necesita algo que el entorno no te deja hacer.\n\nEs lo mismo que nos toca resolver en Bakano cuando armamos agentes para empresas reales. La idea casi nunca es el problema. El problema es dónde vive y con qué se conecta.\nEsta vez el cliente fui yo.\n\nSi tuvieras un agente publicando por ti, qué parte no te animarías a soltarle?\n\n#IA #Automatizacion #ClaudeAgentSDK"
+  }
+]
