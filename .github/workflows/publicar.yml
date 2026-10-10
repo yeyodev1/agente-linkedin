@@ -2,11 +2,18 @@ name: Publicar en LinkedIn
 
 on:
   schedule:
-    - cron: "30 13 * * *" # 8:30 am hora Ecuador (UTC-5)
+    # El disparo principal lo hace el Worker de Cloudflare a las 8:30 en punto.
+    # Este es el respaldo (10:00 am Ecuador) por si el Worker falla; el candado
+    # del agente evita un segundo post el mismo día.
+    - cron: "0 15 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
         description: "Solo redactar, sin publicar"
+        type: boolean
+        default: false
+      forzar:
+        description: "Publicar aunque ya haya un post hoy"
         type: boolean
         default: false
 
@@ -40,6 +47,7 @@ jobs:
           LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
           LINKEDIN_TOKEN_EXPIRA: ${{ secrets.LINKEDIN_TOKEN_EXPIRA }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          FORZAR: ${{ inputs.forzar && '1' || '0' }}
 
       - name: Guardar historial
         if: ${{ !inputs.dry_run }}

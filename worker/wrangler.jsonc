@@ -1,0 +1,7 @@
+{
+  "name": "disparador-agente-linkedin",
+  "main": "index.ts",
+  "compatibility_date": "2026-09-01",
+  // UTC: 13:30 = 8:30 am hora Ecuador
+  "triggers": { "crons": ["30 13 * * *"] }
+}

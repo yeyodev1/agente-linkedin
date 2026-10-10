@@ -18,6 +18,14 @@ const historial: EntradaHistorial[] = JSON.parse(await readFile(RUTA_HISTORIAL, 
 
 avisarSiTokenPorVencer();
 
+// Candado: un solo post por día (hora Ecuador). El Worker de Cloudflare y el
+// horario de respaldo de GitHub pueden disparar el mismo día; el segundo se salta.
+const diaEcuador = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: "America/Guayaquil" });
+if (process.env.FORZAR !== "1" && !DRY_RUN && historial.some((p) => diaEcuador(new Date(p.fecha)) === diaEcuador(new Date()))) {
+  console.log("Ya hay un post publicado hoy. No publico otro (usa forzar para saltarte esto).");
+  process.exit(0);
+}
+
 // En Actions un secret no definido llega como "" y taparía al otro método de auth.
 for (const k of ["ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"]) {
   if (process.env[k] === "") delete process.env[k];
