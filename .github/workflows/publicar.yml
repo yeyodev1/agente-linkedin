@@ -1,0 +1,50 @@
+name: Publicar en LinkedIn
+
+on:
+  schedule:
+    - cron: "30 13 * * *" # 8:30 am hora Ecuador (UTC-5)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Solo redactar, sin publicar"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-linkedin
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Redactar y publicar
+        run: npm run publicar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
+          LINKEDIN_TOKEN_EXPIRA: ${{ secrets.LINKEDIN_TOKEN_EXPIRA }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+
+      - name: Guardar historial
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git config user.name "agente-linkedin"
+          git config user.email "agente-linkedin@users.noreply.github.com"
+          git add contenido/historial.json
+          git diff --cached --quiet || (git commit -m "post: $(date -u +%F)" && git push)

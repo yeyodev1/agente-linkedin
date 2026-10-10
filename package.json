@@ -1,0 +1,25 @@
+{
+  "name": "agente-para-linkedin",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "publicar": "tsx src/agente.ts",
+    "local": "tsx --env-file-if-exists=.env src/agente.ts",
+    "prueba": "DRY_RUN=1 tsx --env-file-if-exists=.env src/agente.ts",
+    "token": "tsx --env-file-if-exists=.env scripts/obtener-token.ts",
+    "typecheck": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.296",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
