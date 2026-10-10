@@ -34,6 +34,8 @@ const publicar = tool(
     estructura: z.string().describe("Estructura usada, ej. 'tutorial corto'"),
   },
   async ({ texto, gancho, estructura }) => {
+    // Diego no usa signos de apertura: se quitan siempre, aunque el modelo los ponga.
+    texto = texto.replace(/[¿¡]/g, "");
     if (publicado) {
       return { content: [{ type: "text", text: "Ya se publicó un post en esta ejecución. No publiques otro." }], isError: true };
     }
